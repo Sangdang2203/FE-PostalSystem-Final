@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="05f50687-0c16-425b-9f30-df604ddd0822" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/auth/[...nextauth]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/auth/[...nextauth]/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app/admin/roles/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app/admin/roles/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DrawerMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DrawerMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Merge-8.3" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/app/api/users/refresh-token/route.ts" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/app/branches/page.tsx" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/app/create-package/page.tsx" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/app/packages/[packageId]/page.tsx" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2cq8PHdQCJBt58E8ciH2rlGJwnu" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "eslint.code.style.apply.dismiss": "true",
+    "git-widget-placeholder": "Final",
+    "last_opened_file_path": "G:/eProject/tars-delivery-fe",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "ImportCost",
+    "ts.external.directory.path": "G:\\eProject\\tars-delivery-fe\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="ReactBuddySettings">
+    <option name="extensionsIgnore" value="true" />
+  </component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\eProject\tars-delivery-fe" />
+      <recent name="G:\eProject\tars-delivery-fe\src\app\api\packages\cancel" />
+      <recent name="G:\eProject\tars-delivery-fe\src\app\app\packages\[packageId]" />
+      <recent name="G:\eProject\tars-delivery-fe\src\app\api\packages\getpackagebyid\[packageId]" />
+      <recent name="G:\eProject\tars-delivery-fe\src\app\access-denied" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\eProject\tars-delivery-fe\src\app\api\packages\getbyid" />
+      <recent name="G:\eProject\tars-delivery-fe\src\hooks" />
+      <recent name="G:\eProject\tars-delivery-fe\src\contexts" />
+      <recent name="G:\eProject\tars-delivery-fe\src\app\api\locations\getlocationsbyid\[id]" />
+      <recent name="G:\eProject\tars-delivery-fe\src\models\Enum" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="05f50687-0c16-425b-9f30-df604ddd0822" name="Changes" comment="" />
+      <created>1708827723544</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1708827723544</updated>
+      <workItem from="1708827726251" duration="16432000" />
+      <workItem from="1708870241519" duration="4735000" />
+      <workItem from="1708906827990" duration="411000" />
+      <workItem from="1708908873441" duration="750000" />
+      <workItem from="1708915477638" duration="868000" />
+      <workItem from="1708932262958" duration="1218000" />
+      <workItem from="1708936357673" duration="21330000" />
+      <workItem from="1708993776861" duration="13120000" />
+      <workItem from="1709037004488" duration="5466000" />
+      <workItem from="1709082344878" duration="2749000" />
+      <workItem from="1709089854809" duration="9950000" />
+      <workItem from="1709121793658" duration="38458000" />
+      <workItem from="1709206589554" duration="10998000" />
+      <workItem from="1709224862023" duration="17516000" />
+      <workItem from="1709269942864" duration="30868000" />
+      <workItem from="1709338870338" duration="31093000" />
+      <workItem from="1709397609629" duration="242000" />
+      <workItem from="1709397862118" duration="6376000" />
+      <workItem from="1709405829203" duration="1042000" />
+      <workItem from="1709610727147" duration="8546000" />
+      <workItem from="1709626287567" duration="4285000" />
+      <workItem from="1709636591577" duration="4499000" />
+      <workItem from="1709649976146" duration="28032000" />
+      <workItem from="1709831167173" duration="36637000" />
+      <workItem from="1709890852488" duration="12604000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/Sang-Dev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Before Merge 3/3" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+</project>
