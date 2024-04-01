@@ -16,7 +16,8 @@ import LinkBehaviour from "../../../components/LinkBehaviour";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid";
-import { ApiResponse } from "@/types";
+import { ApiResponse } from "@/types/types";
+import { Divider } from "@mui/material";
 
 const url = process.env.NEXT_PUBLIC_API_URL + "/Users/Login";
 
@@ -25,9 +26,9 @@ const schema = z.object({
 		.string({
 			required_error: "Email is required!",
 		})
-		.min(3, "Email must be at least 3 characters!")
+		.min(8, "Email must be at least 8 characters!")
 		.max(50)
-		.email("Invalid email format"),
+		.email("Invalid email format."),
 });
 
 type Schema = z.infer<typeof schema>;
@@ -69,7 +70,7 @@ const ForgotPasswordForm = () => {
 			component="form"
 			onSubmit={handleSubmit(onSubmit)}
 			sx={{
-				maxWidth: "500px",
+				maxWidth: "400px",
 				margin: "auto",
 				padding: "20px",
 				borderRadius: "8px",
@@ -84,13 +85,16 @@ const ForgotPasswordForm = () => {
 				</Alert>
 			)}
 			<Typography
-				variant="h5"
+				variant="body2"
 				component="div"
 				sx={{ mb: 2 }}
 			>
-				Forgot Password Form
+				Enter your email to receive new password
 			</Typography>
+			<Divider />
+
 			<TextField
+				size="small"
 				fullWidth
 				label="Email"
 				type="text"
@@ -120,7 +124,8 @@ const ForgotPasswordForm = () => {
 				<Grid item>
 					<Link
 						href="/login"
-						variant="body2"
+						variant="caption"
+						className="text-decoration-none"
 						component={LinkBehaviour}
 					>
 						Remember your password?

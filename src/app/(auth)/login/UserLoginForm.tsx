@@ -23,6 +23,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
 import { toast } from "sonner";
+import { Divider } from "@mui/material";
 
 const schema = z.object({
 	userId: z
@@ -92,7 +93,7 @@ const UserLoginForm = () => {
 			component="form"
 			onSubmit={handleSubmit(onSubmit)}
 			sx={{
-				maxWidth: "500px",
+				maxWidth: "400px",
 				margin: "auto",
 				padding: "20px",
 				borderRadius: "8px",
@@ -106,82 +107,84 @@ const UserLoginForm = () => {
 					{error}
 				</Alert>
 			)}
-			<Typography
-				variant="h5"
-				component="div"
-				sx={{ mb: 2 }}
-			>
-				Login Your Account
-			</Typography>
-			<TextField
-				fullWidth
-				label="Username"
-				{...register("userId", {
-					setValueAs: v => (v === "" ? undefined : v),
-				})}
-				error={!!errors.userId}
-				helperText={errors.userId?.message}
-				margin="normal"
-			/>
-			<FormControl
-				fullWidth
-				variant="outlined"
-				margin="normal"
-				error={!!errors.password}
-			>
-				<InputLabel htmlFor="password">Password</InputLabel>
-				<OutlinedInput
-					label="Password"
-					id="password"
-					autoComplete="current-password"
-					type={showPassword ? "text" : "password"}
-					{...register("password", {
+			<Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}> Login Your Account </Typography>
+			<Divider />
+
+			<Box sx={{ mt: 3 }}>
+				<TextField
+					size="small"
+					fullWidth
+					label="Username"
+					{...register("userId", {
 						setValueAs: v => (v === "" ? undefined : v),
 					})}
-					endAdornment={
-						<InputAdornment position="end">
-							<IconButton
-								aria-label="toggle password visibility"
-								onClick={handleClickShowPassword}
-								onMouseDown={handleMouseEvents}
-								onMouseUp={handleMouseEvents}
-								edge="end"
-							>
-								{showPassword ? <VisibilityOff /> : <Visibility />}
-							</IconButton>
-						</InputAdornment>
-					}
+					error={!!errors.userId}
+					helperText={errors.userId?.message}
+					margin="normal"
 				/>
-				<FormHelperText>{errors.password?.message}</FormHelperText>
-			</FormControl>
-
-			<Button
-				type="submit"
-				variant="contained"
-				color="error"
-				fullWidth
-				sx={{ mt: 2 }}
-			>
-				Login
-			</Button>
-			<Box sx={{ mt: 2, textAlign: "center" }}>
-				<Link
-					className="text-decoration-none hover:font-semibold"
-					component={LinkBehaviour}
-					href="/forgot-password"
-					variant="body2"
+				<FormControl
+					size="small"
+					fullWidth
+					variant="outlined"
+					margin="normal"
+					error={!!errors.password}
 				>
-					Forgot Password?
-				</Link>
-				<Box mt={1}>
+					<InputLabel htmlFor="password">Password</InputLabel>
+					<OutlinedInput
+						label="Password"
+						id="password"
+						autoComplete="current-password"
+						type={showPassword ? "text" : "password"}
+						{...register("password", {
+							setValueAs: v => (v === "" ? undefined : v),
+						})}
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowPassword}
+									onMouseDown={handleMouseEvents}
+									onMouseUp={handleMouseEvents}
+									edge="end"
+								>
+									{showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+								</IconButton>
+							</InputAdornment>
+						}
+					/>
+					<FormHelperText>{errors.password?.message}</FormHelperText>
+				</FormControl>
+
+				<Button
+					type="submit"
+					variant="contained"
+					color="primary"
+					fullWidth
+					sx={{ mt: 2 }}
+				>
+					Login
+				</Button>
+				<Box sx={{ textAlign: "center" }}>
 					<Link
+						sx={{ display: "flex", justifyContent: "flex-end", my: 1 }}
 						className="text-decoration-none hover:font-semibold"
 						component={LinkBehaviour}
-						href="/register"
-						variant="body2"
+						href="/forgot-password"
+						variant="caption"
 					>
-						Don&apos;t have an account? Sign Up
+						Forgot Password?
 					</Link>
+					<Divider />
+					<Box mt={1}>
+						<Link
+							className="text-decoration-none"
+							component={LinkBehaviour}
+							href="/register"
+							variant="body2"
+						>
+							Don&apos;t have an account? <i className=" hover:font-semibold ">Register now</i>
+						</Link>
+					</Box>
 				</Box>
 			</Box>
 		</Box>

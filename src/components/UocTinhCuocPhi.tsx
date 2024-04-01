@@ -1,11 +1,12 @@
 'use client'
-import { Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, FormHelperText, Grid, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Paper from '@mui/material/Paper'
 import trackingSvg from '../../public/cuoc-phi.png'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation' // Import useRouter hook
+import { red } from '@mui/material/colors'
 
 
 export default function UocTinhCuocPhi() {
@@ -147,13 +148,11 @@ export default function UocTinhCuocPhi() {
   return (
     <>
       <Paper elevation={3}>
-        <Grid container sx={{ p:4 }}>
+        <Grid container sx={{ p: 4 }}>
           <Grid item xs={12} sm={6}>
             <Box>
-              <Typography sx={{ fontWeight:550 }} variant="h5" component="h5">
-                Estimate cost
-              </Typography>
-              <Typography sx={{ my:2, fontWeight:'550' }}>Send from *</Typography>
+              <Typography sx={{ my: 1, fontWeight: '550' }}>Send from (*)</Typography>
+
               <Autocomplete
                 id="city-select-demo"
                 options={locations}
@@ -179,7 +178,7 @@ export default function UocTinhCuocPhi() {
                   />
                 )}
               />
-              <Typography sx={{ my:2, fontWeight:'550' }}>District *</Typography>
+              <Typography sx={{ my: 1, fontWeight: '550' }}>District (*)</Typography>
 
               <Autocomplete
                 id="district-select-demo"
@@ -204,7 +203,7 @@ export default function UocTinhCuocPhi() {
                   />
                 )}
               />
-              <Typography sx={{ my:2, fontWeight:'550' }}>Send to *</Typography>
+              <Typography sx={{ my: 1, fontWeight: '550' }}>Send to (*)</Typography>
               <Autocomplete
                 id="city-to-select-demo"
                 options={locations}
@@ -230,7 +229,7 @@ export default function UocTinhCuocPhi() {
                   />
                 )}
               />
-              <Typography sx={{ my:2, fontWeight:'550' }}>District *</Typography>
+              <Typography sx={{ my: 1, fontWeight: '550' }}>District (*)</Typography>
 
               <Autocomplete
                 id="district-to-select-demo"
@@ -255,28 +254,21 @@ export default function UocTinhCuocPhi() {
                   />
                 )}
               />
-              <Typography sx={{ my:2, fontWeight:'550' }}>Total weight *</Typography>
-              <TextField sx={{ '& .MuiInputBase-input':{ py:1 }, width:'100%', mt:1 }} type="number" placeholder='Enter weight in grams'/>
+              <Typography sx={{ my: 1, fontWeight: '550' }}>Total weight (*)</Typography>
+              <TextField sx={{ '& .MuiInputBase-input': { py: 1 }, width: '100%' }} type="number" placeholder='Enter weight in grams' />
 
-              <Typography sx={{ fontWeight:550 }}>
-                <Button sx={{
-                  my:2,
-                  color:'white',
-                  backgroundColor:'red',
-                  borderRadius:1,
-                  '&:hover':{
-                    backgroundColor:'red',
-                    color:'white'
-                  }
-                }}
-                onClick={handleTraCuuEstimateCost}
-                >Search</Button>
+              <Typography sx={{ fontWeight: 550 }}>
+                <FormHelperText sx={{ color: red[500], pt: 2 }}>(*) Field is required.</FormHelperText>
+                <Button
+                  sx={{ my: 2 }} color='primary' variant='contained'
+                  onClick={handleTraCuuEstimateCost}
+                >Submit</Button>
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box>
-              <Image priority src={trackingSvg} alt="tracking" style={{ display:'block', marginLeft:'auto', marginRight:'auto', maxWidth:'290px' }}/>
+              <Image priority src={trackingSvg} alt="tracking" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', maxWidth: '290px' }} />
             </Box>
           </Grid>
         </Grid>

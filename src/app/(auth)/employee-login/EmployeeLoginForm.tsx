@@ -23,6 +23,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Alert from "@mui/material/Alert";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { Divider } from "@mui/material";
 
 const schema = z.object({
 	userId: z.string({
@@ -90,7 +91,7 @@ const EmployeeLoginForm = () => {
 				component="form"
 				onSubmit={handleSubmit(onSubmit)}
 				sx={{
-					maxWidth: "500px",
+					maxWidth: "400px",
 					margin: "auto",
 					padding: "20px",
 					borderRadius: "8px",
@@ -103,60 +104,62 @@ const EmployeeLoginForm = () => {
 						{error}
 					</Alert>
 				)}
-				<Typography
-					variant="h5"
-					component="div"
-					sx={{ mb: 2 }}>
-					Login Your Account
-				</Typography>
-				<TextField
-					fullWidth
-					label="Email"
-					{...register("userId", {
-						setValueAs: v => (v === "" ? undefined : v),
-					})}
-					error={!!errors.userId}
-					helperText={errors.userId?.message}
-					margin="normal"
-				/>
-				<FormControl
-					fullWidth
-					variant="outlined"
-					margin="normal"
-					error={!!errors.password}>
-					<InputLabel htmlFor="password">Password</InputLabel>
-					<OutlinedInput
-						label="Password"
-						id="password"
-						autoComplete="current-password"
-						type={showPassword ? "text" : "password"}
-						{...register("password", {
+
+				<Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}> Login Your Account </Typography>
+				<Divider />
+
+				<Box sx={{ my: 3 }}>
+					<TextField
+						size="small"
+						fullWidth
+						label="Email"
+						{...register("userId", {
 							setValueAs: v => (v === "" ? undefined : v),
 						})}
-						endAdornment={
-							<InputAdornment position="end">
-								<IconButton
-									aria-label="toggle password visibility"
-									onClick={handleClickShowPassword}
-									onMouseDown={handleMouseEvents}
-									onMouseUp={handleMouseEvents}
-									edge="end">
-									{showPassword ? <VisibilityOff /> : <Visibility />}
-								</IconButton>
-							</InputAdornment>
-						}
+						error={!!errors.userId}
+						helperText={errors.userId?.message}
+						margin="normal"
 					/>
-					<FormHelperText>{errors.password?.message}</FormHelperText>
-				</FormControl>
+					<FormControl
+						size="small"
+						fullWidth
+						variant="outlined"
+						margin="normal"
+						error={!!errors.password}>
+						<InputLabel htmlFor="password">Password</InputLabel>
+						<OutlinedInput
+							label="Password"
+							id="password"
+							autoComplete="current-password"
+							type={showPassword ? "text" : "password"}
+							{...register("password", {
+								setValueAs: v => (v === "" ? undefined : v),
+							})}
+							endAdornment={
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										onMouseDown={handleMouseEvents}
+										onMouseUp={handleMouseEvents}
+										edge="end">
+										{showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+									</IconButton>
+								</InputAdornment>
+							}
+						/>
+						<FormHelperText>{errors.password?.message}</FormHelperText>
+					</FormControl>
 
-				<Button
-					type="submit"
-					variant="contained"
-					color="error"
-					fullWidth
-					sx={{ mt: 2 }}>
-					Login
-				</Button>
+					<Button
+						type="submit"
+						variant="contained"
+						color="primary"
+						fullWidth
+						sx={{ mt: 2 }}>
+						Login
+					</Button>
+				</Box>
 			</Box>
 		</div>
 	);

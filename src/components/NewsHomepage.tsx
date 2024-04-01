@@ -45,7 +45,7 @@ function NewsHomepage() {
   const [blogs, setBlogs] = useState<BlogItem[]>([])
 
   useEffect(() => {
-    fetch('http://localhost:5255/api/Blog/all')
+    fetch('/api/Blog/all')
       .then(response => response.json())
       .then((data: BlogItem[]) => {
         data.sort((a: BlogItem, b: BlogItem) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) // sort by date

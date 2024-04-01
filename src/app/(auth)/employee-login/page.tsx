@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import React from "react";
 import { useSession } from "next-auth/react";
 import EmployeeLoginForm from "./EmployeeLoginForm";
+import { Box } from "@mui/material";
 
 export default function LoginPage() {
 	const [value, setValue] = React.useState(0);
@@ -14,16 +15,19 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className="my-35">
-			<Tabs
-				value={value}
-				onChange={handleChange}
-				centered
-			>
-				<Tab label="Employee" />
-			</Tabs>
+		// <div className="my-35">
+		// 	<Tabs
+		// 		value={value}
+		// 		onChange={handleChange}
+		// 		centered
+		// 	>
+		// 		<Tab label="Employee" />
+		// 	</Tabs>
 
-			{value === 0 && <EmployeeLoginForm />}
+		// 	{value === 0 && <EmployeeLoginForm />}
+		// </div>
+		<div className="my-35" >
+			<EmployeeLoginForm />
 		</div>
 	);
 }

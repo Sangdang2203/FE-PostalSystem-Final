@@ -1,3 +1,5 @@
+import { createContext } from "react";
+
 /*
 'use client';
 import * as React from "react";
@@ -25,3 +27,4 @@ export const PackageCreateProvider = ({ children }) => {
 };
 
 export const usePackageCreate = () => useContext(PackageCreateContext);*/
+export const PackageCreateContext = createContext({});

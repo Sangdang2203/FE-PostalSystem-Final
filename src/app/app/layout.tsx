@@ -5,17 +5,8 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
-import { DeleteOutline, Menu } from "@mui/icons-material";
-import {
-	Card,
-	Container,
-	Divider,
-	List,
-	ListItem,
-	ListItemButton,
-	ListItemIcon,
-	ListItemText,
-} from "@mui/material";
+import { Menu } from "@mui/icons-material";
+import { Container } from "@mui/material";
 import AvatarMenu from "@/components/AvatarMenu";
 import DrawerMenu from "@/components/DrawerMenu";
 
@@ -23,7 +14,7 @@ import { useSession } from "next-auth/react";
 import MenuContext from "@/contexts/MenuContext";
 
 const AppLayout = (props: { children: React.ReactNode; window?: Window }) => {
-	const drawerWidth = 300;
+	const drawerWidth = 250;
 	const [mobileOpen, setMobileOpen] = React.useState(false);
 	const [isClosing, setIsClosing] = React.useState(false);
 
@@ -43,28 +34,9 @@ const AppLayout = (props: { children: React.ReactNode; window?: Window }) => {
 		}
 	};
 
-	const drawer = (
-		<>
-			<Toolbar></Toolbar>
-			<Divider />
-			<List>
-				{["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-					<ListItem
-						key={index}
-						disablePadding>
-						<ListItemButton>
-							<ListItemIcon>
-								<DeleteOutline />
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
-			</List>
-		</>
-	);
 	return (
 		<Box sx={{ display: "flex" }}>
+			{/* Navbar */}
 			<AppBar
 				position="fixed"
 				sx={{
@@ -74,9 +46,7 @@ const AppLayout = (props: { children: React.ReactNode; window?: Window }) => {
 				<Toolbar>
 					<Container
 						sx={{
-							display: "flex",
-							justifyContent: "space-between",
-							alignItems: "center",
+							display: "flex", justifyContent: "space-between", alignItems: "center"
 						}}>
 						<IconButton
 							color="inherit"
@@ -91,6 +61,7 @@ const AppLayout = (props: { children: React.ReactNode; window?: Window }) => {
 					</Container>
 				</Toolbar>
 			</AppBar>
+
 			<Box
 				component="nav"
 				sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
@@ -117,6 +88,7 @@ const AppLayout = (props: { children: React.ReactNode; window?: Window }) => {
 						}}>
 						<DrawerMenu />
 					</Drawer>
+
 					<Drawer
 						variant="permanent"
 						sx={{
@@ -131,6 +103,7 @@ const AppLayout = (props: { children: React.ReactNode; window?: Window }) => {
 					</Drawer>
 				</MenuContext.Provider>
 			</Box>
+			{/* Main content */}
 			<Box
 				component="main"
 				sx={{

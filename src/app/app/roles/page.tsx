@@ -1,7 +1,7 @@
 "use client";
 
 import Loading from "@/components/Loading";
-import { fetchPermissions, fetchRolesWithPermission } from "@/app/_data/data";
+import { fetchPermissions, fetchRolesWithPermission } from "@/app/_data/method";
 import {
 	Avatar,
 	Button,
@@ -20,30 +20,18 @@ import {
 	CardActions,
 	Typography,
 } from "@mui/material";
-import {
-	CloseOutlined,
-	AddCircle,
-	DeleteOutline,
-	CheckBoxOutlineBlank,
-	CheckBox,
-} from "@mui/icons-material";
+import { CloseOutlined, AddCircle, DeleteOutline, CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
 import { useForm, SubmitHandler } from "react-hook-form";
-import React from "react";
-import {
-	ApiResponse,
-	CreatePermission,
-	CreatePermissionRequest,
-	CreateRoleRequest,
-	Permission,
-	Role,
-} from "@/types/types";
+import { ApiResponse, CreatePermission, CreatePermissionRequest, CreateRoleRequest, Permission, Role } from "@/types/types";
 import { toast } from "sonner";
+import React from "react";
 
 export default function RoleManagement() {
+	const [loading, setLoading] = React.useState(true);
 	const [selectedRoleId, setSelectedRoleId] = React.useState<Number>(0);
 	const [roles, setRoles] = React.useState<Role[]>([]);
 	const [permissions, setPermissions] = React.useState<Permission[]>([]);
-	const [isLoading, setIsLoading] = React.useState(true);
+
 	const [openAddPermisson, setOpenAddPermisson] = React.useState(false);
 	const [openAddRole, setOpenAddRole] = React.useState(false);
 	const [createPermission, setCreatePermission] = React.useState(false);
@@ -79,7 +67,7 @@ export default function RoleManagement() {
 			if (permissionRes.ok) {
 				setPermissions(permissionRes.data);
 			}
-			setIsLoading(false);
+			setLoading(false);
 		});
 	}, []);
 
@@ -216,18 +204,13 @@ export default function RoleManagement() {
 
 	return (
 		<>
-			{isLoading ? (
+			{loading ? (
 				<Loading />
 			) : (
 				<div className="mt-4">
 					<Box className="mx-2 flex justify-between items-center">
-						<Button
-							color="primary"
-							variant="contained"
-							size="small"
-							className="mb-3"
-							onClick={() => setOpenAddRole(true)}
-						>
+						<Button color="primary" variant="contained" size="small" sx={{ my: 12 }}
+							onClick={() => setOpenAddRole(true)} >
 							<Tooltip title="Add Role">
 								<Typography>+ Add</Typography>
 							</Tooltip>
@@ -264,12 +247,7 @@ export default function RoleManagement() {
 									<Box className="my-2">
 										{role.roleHasPermissions.length > 0 && role.roleHasPermissions.slice(0, 4).map(permission => (
 											<Chip
-												key={permission}
-												label={permission}
-												color="default"
-												variant="outlined"
-												size="small"
-												className="text-xs mr-1"
+												key={permission} label={permission} color="default" variant="outlined" size="small" className="text-xs mr-1"
 												onDelete={() => {
 													handleDelete(role.id, permission);
 												}}
@@ -320,6 +298,7 @@ export default function RoleManagement() {
 											})}
 										</DialogContent>
 									</Dialog>)}
+
 								</CardContent>
 
 								<CardActions className="absolute inset-x-0 bottom-1 mt-10 flex justify-between items-center">
@@ -386,9 +365,7 @@ export default function RoleManagement() {
 										<label className="font-semibold">Name:</label>
 									</div>
 									<Input
-										autoFocus
-										color="info"
-										style={{ width: 350 }}
+										autoFocus color="info" style={{ width: 350 }}
 										{...roleRegister("name", {
 											required: "Role name is required.",
 										})}

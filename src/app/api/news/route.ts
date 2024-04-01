@@ -1,5 +1,6 @@
 import { BlogItem } from "@/components/interfaces";
 import { NextResponse } from "next/server";
+
 export async function GET() {
 	const url = `${process.env.NEXT_PUBLIC_API_URL}/Blog/all`;
 	try {
@@ -24,5 +25,4 @@ export async function GET() {
 			status: 400,
 		});
 	}
-	// return NextResponse.json({ url: url });
 }

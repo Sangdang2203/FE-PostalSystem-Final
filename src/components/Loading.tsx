@@ -1,15 +1,16 @@
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import * as React from "react";
 
 export default function Loading() {
 	return (
-		<div className="flex justify-center items-center my-10">
+		<Box sx={{ display: "flex", direction: "revert-layer", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
 			<CircularProgress
 				variant="indeterminate"
 				color="error"
-				size={30}
-				className="mb-10"
+				size={50}
+				thickness={2}
+				aria-label="Loading ..."
 			/>
-		</div>
+		</Box>
 	);
 }
