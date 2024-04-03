@@ -6,68 +6,23 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/components/Loading";
 
-import {
-	Box,
-	Button,
-	CircularProgress,
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	Grid,
-	Paper,
-	Switch,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TablePagination,
-	TableRow,
-	TextField,
-	Tooltip,
-} from "@mui/material";
-
-import {
-	CloseOutlined,
-	DriveFileRenameOutline,
-	Update,
-	SearchOutlined,
-	VisibilityOffOutlined,
-	VisibilityOutlined,
-} from "@mui/icons-material";
-
-import {
-	ApiResponse,
-	Employee,
-	Branch,
-	Role,
-	Province,
-	CreateEmployeeRequest,
-	UpdateEmployeeRequest,
-} from "@/types/types";
-
-import {
-	getProvinces,
-	getChildrenLocationsByParentId,
-	fetchEmployees,
-	fetchBranches,
-	fetchRolesWithPermission,
-	fetchChangeStatus,
-} from "@/app/_data/data";
-
+import { Box, Button, IconButton, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Tooltip } from "@mui/material";
+import { CloseOutlined, DriveFileRenameOutline, Update, SearchOutlined, VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { ApiResponse, Employee, Branch, Role, Province, CreateEmployeeRequest, UpdateEmployeeRequest } from "@/types/types";
+import { getProvinces, getChildrenLocationsByParentId, fetchEmployees, fetchBranches, fetchRolesWithPermission, fetchChangeStatus } from "@/app/_data/method";
 
 const columns = [
 	{ header: "#" }, { header: "Fullname" }, { header: "Email" }, { header: "Phone" }, { header: "Branch" }, { header: "Role" }, { header: "Status" },
 ]
 
 export default function EmployeeManagement() {
+	const [loading, setLoading] = React.useState(true);
 	const [employees, setEmployees] = React.useState<Employee[]>([]);
 	const [employee, setEmployee] = React.useState<Employee>();
 	const [branches, setBranches] = React.useState<Branch[]>([]);
 	const [roles, setRoles] = React.useState<Role[]>([]);
 	const [provinces, setProvinces] = React.useState<Province[]>([]);
 	const [districts, setDistricts] = React.useState<Province[]>([]);
-	const [loading, setLoading] = React.useState(true);
 	const [openAddForm, setOpenAddForm] = React.useState(false);
 	const [openUpdateForm, setOpenUpdateForm] = React.useState(false);
 	const [showPassword, setShowPassword] = React.useState(false);
@@ -270,19 +225,12 @@ export default function EmployeeManagement() {
 				) : (
 					<Box>
 						<TableContainer sx={{ width: "100%", overflow: "hidden" }}>
-							<Table
-								sx={{ minWidth: 650 }}
-								size="small"
-								aria-label="a dense table">
+							<Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
 								<TableHead>
 									<TableRow>
 										{columns.map((col) => {
 											return (
-												<TableCell key={col.header}
-													align="center"
-													className="text-white text-sm">
-													{col.header}
-												</TableCell>
+												<TableCell key={col.header} align="center" className="text-white text-sm">{col.header}</TableCell>
 											)
 										})}
 									</TableRow>
@@ -291,12 +239,7 @@ export default function EmployeeManagement() {
 								<TableBody>
 									{employees.length == null && (
 										<TableRow>
-											<TableCell
-												colSpan={7}
-												align="center"
-												className="text-sm">
-												No Data
-											</TableCell>
+											<TableCell colSpan={7} align="center" className="text-sm"> No Data</TableCell>
 										</TableRow>
 									)}
 
@@ -312,31 +255,19 @@ export default function EmployeeManagement() {
 												sx={{
 													"&:last-child td, &:last-child th": { border: 0 },
 												}}>
-												<TableCell align="center">
-													{employee.employeeCode}
-												</TableCell>
-												<TableCell align="center">
-													{employee.fullname}
-												</TableCell>
+												<TableCell align="center">{employee.employeeCode}</TableCell>
+												<TableCell align="center">{employee.fullname}</TableCell>
 												<TableCell align="center">{employee.email}</TableCell>
-												<TableCell align="center">
-													{employee.phoneNumber}
-												</TableCell>
-												<TableCell align="center">
-													{employee.branchName}
-												</TableCell>
-												<TableCell align="center">
-													{employee.roleName}
-												</TableCell>
+												<TableCell align="center">{employee.phoneNumber}</TableCell>
+												<TableCell align="center">{employee.branchName}</TableCell>
+												<TableCell align="center">{employee.roleName}</TableCell>
 												<TableCell align="center">
 													<Switch
 														size="small"
 														color="success"
 														className="cursor-pointer"
 														checked={employee.status == 1 ? true : false}
-														disabled={
-															employee.roleName === "Branch Manager" ? true : false
-														}
+														disabled={employee.roleName === "Branch Manager" ? true : false}
 														onChange={() => handleChangeStatus(employee.id)}
 													/>
 												</TableCell>
@@ -347,10 +278,7 @@ export default function EmployeeManagement() {
 						</TableContainer>
 						<TablePagination
 							component="div"
-							count={
-								employees.filter(e => e.branchName === session.user.branchName)
-									.length || 0
-							}
+							count={employees.filter(e => e.branchName === session.user.branchName).length || 0}
 							page={page}
 							onPageChange={handleChangePage}
 							rowsPerPage={rowsPerPage}
@@ -362,50 +290,32 @@ export default function EmployeeManagement() {
 		);
 	} else {
 		return (
-			<>
+			<Box>
 				{loading ? (
 					<Loading />
 				) : (
-					<>
-						<Paper
-							elevation={6}
-							sx={{ borderRadius: "10px", boxSizing: "border-box" }}>
+					<Box>
+						<Paper elevation={6} sx={{ borderRadius: "10px", boxSizing: "border-box" }}>
 							<Grid container>
-								<Grid
-									item
-									xs={12}
-									sm={6}
-									className="flex justify-between items-center p-3">
-									<Button
-										variant="contained"
-										color="primary"
-										onClick={() => setOpenAddForm(true)}>
+								<Grid item xs={12} sm={6} className="flex justify-between items-center p-3">
+									<Button variant="contained" color="primary" onClick={() => setOpenAddForm(true)}>
 										+ Add
 									</Button>
 								</Grid>
-								<Grid
-									item
-									xs={12}
-									sm={6}>
+								<Grid item xs={12} sm={6}>
 									<form
 										onSubmit={handleSearch}
 										method="post"
 										className="flex justify-end items-center my-3 relative">
-										<input
-											type="text"
-											name="search"
-											id="searchInput"
-											className="mr-3 px-2 text-[14px] rounded-md min-w-[300px] min-h-[40px] cursor-pointer"
+										<TextField
+											size="small" type="text" name="search" id="searchInput"
+											sx={{ mr: 3, px: 2, fontSize: "14px", borderRadius: "8px", minWidth: "300px", minHeight: "40px", cursor: "pointer" }}
 											placeholder="Enter name to search"
 										/>
 										<div className="absolute inset-y-0 right-0 flex items-center">
-											<Button
-												color="success"
-												variant="text"
-												size="small"
-												className="rounded-full">
-												<SearchOutlined fontSize="small" />
-											</Button>
+											<IconButton sx={{ position: "relative", mr: 3 }}>
+												<SearchOutlined color="success" fontSize="small" />
+											</IconButton>
 										</div>
 									</form>
 								</Grid>
@@ -892,9 +802,9 @@ export default function EmployeeManagement() {
 								</DialogContent>
 							</Dialog>
 						)}
-					</>
+					</Box>
 				)}
-			</>
+			</Box>
 		);
 	}
 }

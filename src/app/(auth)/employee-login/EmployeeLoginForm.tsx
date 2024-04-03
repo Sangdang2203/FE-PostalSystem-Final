@@ -98,12 +98,6 @@ const EmployeeLoginForm = () => {
 					boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
 					backgroundColor: "white",
 				}}>
-				{error && (
-					<Alert severity="error">
-						<AlertTitle>Error</AlertTitle>
-						{error}
-					</Alert>
-				)}
 
 				<Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}> Login Your Account </Typography>
 				<Divider />
@@ -160,6 +154,12 @@ const EmployeeLoginForm = () => {
 						Login
 					</Button>
 				</Box>
+
+				{error && (
+					<Alert severity="error">
+						<AlertTitle>Error: {error}</AlertTitle>
+					</Alert>
+				)}
 			</Box>
 		</div>
 	);

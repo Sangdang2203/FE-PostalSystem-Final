@@ -1,6 +1,6 @@
 "use client";
 
-import styles from '../styles/AccessDenied.module.css';
+import styles from '@/styles/AccessDenied.module.css';
 import Link from 'next/link';
 import React from 'react';
 

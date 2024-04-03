@@ -10,7 +10,6 @@ import {
 	DialogTitle,
 	Tooltip,
 	Chip,
-	Input,
 	Autocomplete,
 	Checkbox,
 	TextField,
@@ -19,15 +18,26 @@ import {
 	CardContent,
 	CardActions,
 	Typography,
+	Divider,
+	FormHelperText,
+	IconButton,
 } from "@mui/material";
-import { CloseOutlined, AddCircle, DeleteOutline, CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
+import { CheckBoxOutlineBlank, CheckBox, AddCircle, CloseOutlined, DeleteOutline } from "@mui/icons-material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ApiResponse, CreatePermission, CreatePermissionRequest, CreateRoleRequest, Permission, Role } from "@/types/types";
 import { toast } from "sonner";
 import React from "react";
+import { red } from "@mui/material/colors";
+
 
 export default function RoleManagement() {
 	const [loading, setLoading] = React.useState(true);
+	const [expanded, setExpanded] = React.useState(false);
+
+	const [open, setOpen] = React.useState(false);
+	const handleOpen = () => setOpen(true);
+	const handleClose = () => setOpen(false);
+
 	const [selectedRoleId, setSelectedRoleId] = React.useState<Number>(0);
 	const [roles, setRoles] = React.useState<Role[]>([]);
 	const [permissions, setPermissions] = React.useState<Permission[]>([]);
@@ -35,8 +45,11 @@ export default function RoleManagement() {
 	const [openAddPermisson, setOpenAddPermisson] = React.useState(false);
 	const [openAddRole, setOpenAddRole] = React.useState(false);
 	const [createPermission, setCreatePermission] = React.useState(false);
-	const [openModal, setOpenModal] = React.useState(false);
 	const [selectedRole, setSelectedRole] = React.useState<Role | null>(null);
+
+	function handleExpandClick() {
+		setExpanded(!expanded);
+	}
 
 	const {
 		register: roleRegister,
@@ -147,7 +160,7 @@ export default function RoleManagement() {
 	// Add permissions into role
 	async function AddPermission(formData: CreatePermissionRequest) {
 		const loadingId = toast.loading("Loading...");
-		const res = await fetch(`/api/roles/${selectedRoleId}/permission`, {
+		const res = await fetch(`/api/roles/${selectedRole?.id}/permission`, {
 			method: "POST",
 			body: JSON.stringify(formData),
 		});
@@ -207,9 +220,9 @@ export default function RoleManagement() {
 			{loading ? (
 				<Loading />
 			) : (
-				<div className="mt-4">
-					<Box className="mx-2 flex justify-between items-center">
-						<Button color="primary" variant="contained" size="small" sx={{ my: 12 }}
+				<div className="">
+					<Box className="flex justify-between items-center">
+						<Button color="primary" variant="contained" size="small" sx={{ my: 2 }}
 							onClick={() => setOpenAddRole(true)} >
 							<Tooltip title="Add Role">
 								<Typography>+ Add</Typography>
@@ -217,26 +230,26 @@ export default function RoleManagement() {
 						</Button>
 					</Box>
 
+
 					{/* Role card */}
-					<Box className="grid sm:grid-cols-3 gap-x-0 gap-y-10">
+					<Box className="grid sm:grid-cols-3 gap-x-3 gap-y-6">
 						{roles.map(role => (
 							<Card
 								key={role.id}
-								className="relative mx-2 px-1 rounded-md hover:shadow-lg cursor-pointer"
+								className="relative px-1 rounded-md hover:shadow-lg cursor-pointer"
 							>
 								<CardContent className="relative mb-3">
-									<Box className="w-full h-full flex justify-between items-center">
+									<Box className="w-full h-full flex items-center">
 										<Avatar
 											src={role.name.slice(0, 1)}
 											alt={role.name}
-											className="w-16 h-16"
 										/>
 										<Box className="">
 											<Typography
 												className={
 													role.name === "Admin"
-														? "text-green-700 font-semibold"
-														: "text-orange-400"
+														? "text-green-700 font-semibold mx-2"
+														: "text-orange-400 mx-2"
 												}
 											>
 												{role.name}
@@ -245,94 +258,82 @@ export default function RoleManagement() {
 									</Box>
 
 									<Box className="my-2">
+										{role.roleHasPermissions.length == 0 && (<p className="text-xs">The role has no permission.</p>)}
 										{role.roleHasPermissions.length > 0 && role.roleHasPermissions.slice(0, 4).map(permission => (
 											<Chip
-												key={permission} label={permission} color="default" variant="outlined" size="small" className="text-xs mr-1"
+												key={permission} label={permission} color="default" variant="outlined" size="small" className="text-xs mr-1 my-1"
 												onDelete={() => {
 													handleDelete(role.id, permission);
 												}}
 											/>
 										))}
 										{role.roleHasPermissions.length > 4 ?
-											(<div><p className="text-xs">and {(role.roleHasPermissions.length - 4)} others</p>
-												<Button variant="text" size="small" onClick={() => setSelectedRole(role)}> ... see all</Button></div>
+											(
+												<Box sx={{ mb: 2 }}>
+													<p className="text-xs"> and {(role.roleHasPermissions.length - 4)} others</p>
+													<Button variant="text" size="small" onClick={() => setSelectedRole(role)}>... see all</Button>
+												</Box>
 											)
 											: ""
 										}
 									</Box>
 
-									{selectedRole && (<Dialog
-										open
-										className="max-w-[500px] mx-auto">
-										<Tooltip title="Close">
-											<CloseOutlined
-												onClick={() => setSelectedRole(null)}
-												color="error"
-												className="text-md absolute top-1 right-1 rounded-full hover:opacity-80 hover:bg-red-200 cursor-pointer"
-											/>
-										</Tooltip>
-										<DialogContent>
-											<Typography
-												className={
-													selectedRole.name === "Admin"
-														? "text-green-700 font-semibold my-1"
-														: "text-orange-400 my-1"
-												}
-											>
-												{selectedRole.name} has permissions, include:
-											</Typography>
-											{selectedRole.roleHasPermissions.map(permission => {
-												return (
-													<Chip
-														key={permission}
-														label={permission}
-														color="default"
-														variant="outlined"
-														size="small"
-														className="text-xs mr-1"
-														onDelete={() => {
-															handleDelete(selectedRole.id, permission);
-														}}
-													/>
-												);
-											})}
-										</DialogContent>
-									</Dialog>)}
-
+									{selectedRole &&
+										(<Dialog open sx={{ maxWidth: 500, mx: "auto" }}>
+											<Tooltip title="Close">
+												<CloseOutlined
+													color="error"
+													onClick={() => setSelectedRole(null)}
+													className="text-md absolute top-1 right-1 rounded-full hover:opacity-80 hover:bg-red-200 cursor-pointer"
+												/>
+											</Tooltip>
+											<DialogContent>
+												<Typography
+													className={
+														selectedRole.name === "Admin" ? "text-green-700 font-semibold my-1" : "text-orange-400 my-1"
+													}
+												>
+													{selectedRole.name} has permissions, include:
+												</Typography>
+												{selectedRole.roleHasPermissions.map(permission => {
+													return (
+														<Chip
+															key={permission}
+															label={permission}
+															color="default"
+															variant="outlined"
+															size="small"
+															className="text-xs mr-1 my-1"
+															onDelete={() => {
+																handleDelete(selectedRole.id, permission);
+															}}
+														/>
+													);
+												})}
+											</DialogContent>
+										</Dialog>)}
 								</CardContent>
 
-								<CardActions className="absolute inset-x-0 bottom-1 mt-10 flex justify-between items-center">
+								<CardActions className="absolute inset-x-0 bottom-1 flex justify-between items-center">
 									<Tooltip title="Add Permission">
-										<Button
+										<IconButton
 											onClick={() => {
 												setOpenAddPermisson(true);
 												setSelectedRoleId(role.id);
-											}}
-											size="small"
-											color="info"
-											variant="text"
-											className="rounded-full hover:opacity-75"
-										>
-											<AddCircle fontSize="small" />
-										</Button>
+											}}>
+											<AddCircle fontSize="small" color="primary" /></IconButton>
 									</Tooltip>
 
 									<Tooltip title="Remove Role">
-										<Button
+										<IconButton
 											onClick={() => {
 												if (
 													window.confirm("Are you sure to remove this role?")
 												) {
 													handleDeleteRole(role.id);
 												}
-											}}
-											size="small"
-											color="error"
-											variant="text"
-											className="rounded-full hover:opacity-75"
-										>
-											<DeleteOutline fontSize="small" />
-										</Button>
+											}}>
+											<DeleteOutline fontSize="small" color="error" /></IconButton>
 									</Tooltip>
 								</CardActions>
 							</Card>
@@ -353,39 +354,27 @@ export default function RoleManagement() {
 							/>
 						</Tooltip>
 
-						<DialogTitle className="text-center mt-2">Add Role</DialogTitle>
+						<DialogTitle className="text-center mt-2">Add New Role</DialogTitle>
+						<Divider />
 
 						<DialogContent>
 							<form
-								onSubmit={roleHandleSubmit(AddRole)}
-								className="text-xs"
-							>
-								<div className="my-3">
-									<div>
-										<label className="font-semibold">Name:</label>
-									</div>
-									<Input
-										autoFocus color="info" style={{ width: 350 }}
+								onSubmit={roleHandleSubmit(AddRole)} className="text-xs">
+								<Box sx={{ my: 3 }}>
+									<TextField
+										label="Name" autoFocus color="info" sx={{ maxWidth: 300 }}
+										placeholder="Enter role name"
 										{...roleRegister("name", {
 											required: "Role name is required.",
 										})}
-										placeholder="Enter role name"
 									/>
-								</div>
+								</Box>
 
-								<span className="text-danger">{roleErrors.name?.message}</span>
+								<FormHelperText sx={{ color: red[500] }}>{roleErrors.name?.message}</FormHelperText>
 
-								<div className="flex justify-around my-3">
-									<Button
-										color="success"
-										variant="contained"
-										size="medium"
-										type="submit"
-										className="w-full"
-									>
-										+ Add New
-									</Button>
-								</div>
+								<Box className="flex justify-around my-3">
+									<Button fullWidth color="success" variant="contained" size="medium" type="submit">+ Add New</Button>
+								</Box>
 							</form>
 						</DialogContent>
 					</Dialog>
@@ -403,10 +392,6 @@ export default function RoleManagement() {
 								className="text-md absolute top-1 right-1 rounded-full hover:opacity-80 hover:bg-red-200 cursor-pointer"
 							/>
 						</Tooltip>
-
-						<DialogTitle className="text-center mt-2">
-							Add Permissions
-						</DialogTitle>
 
 						<DialogContent>
 							<form className="text-xs">
@@ -474,7 +459,7 @@ export default function RoleManagement() {
 					<Dialog
 						open={createPermission}
 						onClose={() => setCreatePermission(false)}
-						className="max-w-[500px] mx-auto"
+						sx={{ maxWidth: 450, mx: "auto" }}
 					>
 						<Tooltip title="Close">
 							<CloseOutlined
@@ -490,13 +475,10 @@ export default function RoleManagement() {
 								className="text-xs"
 							>
 								<div className="my-3">
-									<div>
-										<label className="font-semibold">Name:</label>
-									</div>
-									<Input
-										autoFocus
+									<TextField
+										autoFocus variant="outlined"
 										color="info"
-										style={{ width: 350 }}
+										sx={{ minWidth: 300 }}
 										{...register("name", {
 											required: "Permission name is required.",
 										})}
@@ -504,19 +486,9 @@ export default function RoleManagement() {
 									/>
 								</div>
 
-								<span className="text-danger">{roleErrors.name?.message}</span>
+								<span className="text-danger">{permissionErrors.permissionNames?.message}</span>
 
-								<div className="flex justify-around my-3">
-									<Button
-										color="success"
-										variant="contained"
-										size="medium"
-										type="submit"
-										className="w-full"
-									>
-										+ Add New
-									</Button>
-								</div>
+								<Button color="success" variant="contained" size="medium" type="submit" fullWidth>+ Add New</Button>
 							</form>
 						</DialogContent>
 					</Dialog>

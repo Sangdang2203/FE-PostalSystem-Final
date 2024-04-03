@@ -1,46 +1,19 @@
 "use client";
 
 import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
 import Loading from "@/app/components/Loading";
-import {
-	Avatar,
-	Box,
-	Button,
-	Grid,
-	Paper,
-	Switch,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TablePagination,
-	TableRow,
-} from "@mui/material";
-import {
-	CloseOutlined,
-	DriveFileRenameOutline,
-	Update,
-	SearchOutlined,
-} from "@mui/icons-material";
+import { Avatar, Box, Grid, IconButton, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, } from "@mui/material";
+import { SearchOutlined } from "@mui/icons-material";
 import { ApiResponse, User, Role, Province } from "@/types/types";
-import {
-	getProvinces,
-	getChildrenLocationsByParentId,
-	fetchUsers,
-	fetchRolesWithPermission,
-	fetchChangeStatus,
-} from "@/app/_data/data";
+import { getProvinces, fetchUsers, fetchRolesWithPermission } from "@/app/_data/method";
 import { useSession } from "next-auth/react";
 
 export default function UserManagement() {
+	const [loading, setLoading] = React.useState(true);
 	const [users, setUsers] = React.useState<User[]>([]);
 	const [user, setUser] = React.useState<User>();
 	const [roles, setRoles] = React.useState<Role[]>([]);
 	const [provinces, setProvinces] = React.useState<Province[]>([]);
-	const [districts, setDistricts] = React.useState<Province[]>([]);
-	const [loading, setLoading] = React.useState(true);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	// const province = watch("province");
@@ -113,102 +86,48 @@ export default function UserManagement() {
 			{loading ? (
 				<Loading />
 			) : (
-				<>
-					<Paper
-						elevation={6}
-						sx={{ borderRadius: "10px", boxSizing: "border-box" }}>
+				<Box>
+					<Paper elevation={6} sx={{ borderRadius: "10px", boxSizing: "border-box" }}>
 						<Grid container>
-							<Grid
-								item
-								xs={12}
-								sm={6}
-								className="flex justify-between items-center p-3"></Grid>
-							<Grid
-								item
-								xs={12}
-								sm={6}>
+							<Grid item xs={12} sm={6}></Grid>
+							<Grid item xs={12} sm={6}>
 								<form
 									onSubmit={handleSearch}
 									method="post"
 									className="flex justify-end items-center my-3 relative">
-									<input
-										type="text"
-										name="search"
-										id="searchInput"
-										className="mr-3 px-2 text-[14px] rounded-md min-w-[300px] min-h-[40px] cursor-pointer"
+									<TextField
+										size="small" type="text" name="search" id="searchInput"
+										sx={{ mr: 3, px: 2, fontSize: "14px", borderRadius: "8px", minWidth: "300px", minHeight: "40px", cursor: "pointer" }}
 										placeholder="Enter name to search"
 									/>
 									<div className="absolute inset-y-0 right-0 flex items-center">
-										<Button
-											color="success"
-											variant="text"
-											size="small"
-											className="rounded-full">
-											<SearchOutlined fontSize="small" />
-										</Button>
+										<IconButton sx={{ position: "relative", mr: 3 }}>
+											<SearchOutlined color="success" fontSize="small" />
+										</IconButton>
 									</div>
 								</form>
 							</Grid>
 						</Grid>
 					</Paper>
 
-					<Paper
-						elevation={6}
-						sx={{ my: 3, borderRadius: "10px", boxSizing: "border-box" }}>
+					<Paper elevation={6} sx={{ my: 3, borderRadius: "10px", boxSizing: "border-box" }}>
 						<TableContainer sx={{ width: "100%", overflow: "hidden" }}>
-							<Table
-								className="mt-3"
-								sx={{ minWidth: 650 }}
-								size="small"
-								aria-label="a dense table">
+							<Table sx={{ minWidth: 650, mt: 3 }} size="small" aria-label="a dense table">
 								<TableHead>
 									<TableRow>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											#
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Fullname
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Email
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Phone Number
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Avatar
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Status
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Create At
-										</TableCell>
+										<TableCell align="center" className="text-white text-sm"> # </TableCell>
+										<TableCell align="center" className="text-white text-sm"> Fullname </TableCell>
+										<TableCell align="center" className="text-white text-sm"> Email </TableCell>
+										<TableCell align="center" className="text-white text-sm"> Phone Number </TableCell>
+										<TableCell align="center" className="text-white text-sm"> Avatar </TableCell>
+										<TableCell align="center" className="text-white text-sm"> Status </TableCell>
+										<TableCell align="center" className="text-white text-sm"> Create At </TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
 									{users.length === 0 && (
 										<TableRow>
-											<TableCell
-												colSpan={7}
-												align="center"
-												className="text-sm">
-												No data ...
-											</TableCell>
+											<TableCell colSpan={7} align="center" className="text-sm"> No data ... </TableCell>
 										</TableRow>
 									)}
 									{users
@@ -227,20 +146,11 @@ export default function UserManagement() {
 														{user.phone}
 													</TableCell>
 													<TableCell align="center">
-														<Avatar
-															style={{ marginLeft: "2rem" }}
-															src={user.avatar}
-															alt={user.fullname}
-														/>
+														<Avatar style={{ marginLeft: "2rem" }} src={user.avatar} alt={user.fullname} />
 													</TableCell>
 
 													<TableCell align="center">
-														<Switch
-															size="small"
-															color="success"
-															className="cursor-pointer"
-															checked={user.status == 1 ? true : false}
-														/>
+														<Switch size="small" color="success" className="cursor-pointer" checked={user.status == 1 ? true : false} />
 													</TableCell>
 													<TableCell align="center">{user.createAt}</TableCell>
 												</TableRow>
@@ -258,7 +168,7 @@ export default function UserManagement() {
 							/>
 						</TableContainer>
 					</Paper>
-				</>
+				</Box>
 			)}
 		</>
 	);

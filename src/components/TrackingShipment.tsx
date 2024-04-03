@@ -21,7 +21,7 @@ export default function TrackingShipment() {
   const handleTraCuuButton = async () => {
     // Check if trackingCode is not empty
     if (!trackingCode || !phoneFrom) {
-      toast.error('Please enter a tracking code and phone number')
+      toast.error('Please enter a tracking code and phone number.')
       return
     }
 
@@ -56,34 +56,23 @@ export default function TrackingShipment() {
           <Grid item xs={12} sm={6}>
             <Box>
               <Typography sx={{ fontWeight: 550, py: 1 }}>
-                Tracking Code
+                Tracking Code:
               </Typography>
               {/* <Typography sx={{ fontWeight:550, fontSize:'16px', py:1 }}>
                 (Tra nhiều bill bằng cách thêm dấu phẩy giữa các bill)
               </Typography> */}
-              <TextField sx={{ '& .MuiInputBase-input': { py: 1 }, width: '100%' }}
-                type="text"
-                placeholder='Example: 123456, 24563'
-                value={trackingCode}
+              <TextField sx={{ '& .MuiInputBase-input': { py: 2 }, width: '100%' }} type="text"
+                placeholder='Example: 123456, 24563' value={trackingCode}
                 onChange={handleInputChange}
               />
 
               <TextField
-                sx={{ '& .MuiInputBase-input': { py: 1 }, width: '100%', mt: 1 }}
-                type="text"
+                sx={{ '& .MuiInputBase-input': { py: 2 }, width: '100%', mt: 2 }}
+                size="medium" type="text"
                 placeholder='Enter your phone number'
                 onChange={handlePhoneFromChange}
               />
-              <Button sx={{
-                my: 2,
-                color: 'white',
-                backgroundColor: 'red',
-                borderRadius: 1,
-                '&:hover': {
-                  backgroundColor: 'red',
-                  color: 'white'
-                }
-              }}
+              <Button variant='contained' color='primary' sx={{ my: 2 }}
                 onClick={handleTraCuuButton}
               >
                 Search

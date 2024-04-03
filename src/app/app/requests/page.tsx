@@ -1,13 +1,15 @@
 "use client";
 
-import { fetchEmployees, fetchUpdatedRequests } from "@/app/_data/data";
 import {
 	Avatar,
+	Box,
 	Button,
 	Dialog,
 	DialogContent,
 	DialogTitle,
 	Grid,
+	IconButton,
+	InputLabel,
 	Paper,
 	Table,
 	TableBody,
@@ -16,21 +18,25 @@ import {
 	TableHead,
 	TablePagination,
 	TableRow,
+	TextField,
 	Tooltip,
 } from "@mui/material";
 import {
-	DoneOutline,
 	CloseOutlined,
 	SearchOutlined,
+	Visibility,
 } from "@mui/icons-material";
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+
 import Loading from "@/app/components/Loading";
 import { ApiResponse, AcceptEmployeeRequest, Employee } from "@/types/types";
+import { fetchEmployees, fetchUpdatedRequests } from "@/app/_data/method";
 import { toast } from "sonner";
 import React from "react";
 
 export default function UpdatedRequestManagement() {
-	const [employees, setEmployees] = React.useState<AcceptEmployeeRequest[]>([]);
 	const [loading, seLoading] = React.useState(true);
+	const [employees, setEmployees] = React.useState<AcceptEmployeeRequest[]>([]);
 	const [selectedEmployee, setSelectedEmployee] =
 		React.useState<AcceptEmployeeRequest | null>(null);
 	const [page, setPage] = React.useState(0);
@@ -69,8 +75,6 @@ export default function UpdatedRequestManagement() {
 						const [key, value] = pair.split(":");
 						extractedInfo[key.toLowerCase()] = value;
 					});
-
-					//@ts-ignore
 
 					//@ts-ignore
 					acceptEmployee.submitedInfo = extractedInfo;
@@ -171,34 +175,22 @@ export default function UpdatedRequestManagement() {
 						elevation={6}
 						sx={{ borderRadius: "10px", boxSizing: "border-box" }}>
 						<Grid container>
-							<Grid
-								item
-								xs={12}
-								sm={6}
+							<Grid item xs={12} sm={6}
 								className="flex justify-between items-center p-3"></Grid>
-							<Grid
-								item
-								xs={12}
-								sm={6}>
+							<Grid item xs={12} sm={6}>
 								<form
 									onSubmit={handleSearch}
 									method="post"
 									className="flex justify-end items-center my-3 relative">
-									<input
-										type="text"
-										name="search"
-										id="searchInput"
-										className="mr-3 px-2 text-[14px] rounded-md min-w-[300px] min-h-[40px] cursor-pointer"
+									<TextField
+										size="small" type="text" name="search" id="searchInput"
+										sx={{ mr: 3, px: 2, fontSize: "14px", borderRadius: "8px", minWidth: "300px", minHeight: "40px", cursor: "pointer" }}
 										placeholder="Enter name to search"
 									/>
 									<div className="absolute inset-y-0 right-0 flex items-center">
-										<Button
-											color="success"
-											variant="text"
-											size="small"
-											className="rounded-full">
-											<SearchOutlined fontSize="small" />
-										</Button>
+										<IconButton sx={{ position: "relative", mr: 3 }}>
+											<SearchOutlined color="success" fontSize="small" />
+										</IconButton>
 									</div>
 								</form>
 							</Grid>
@@ -216,52 +208,20 @@ export default function UpdatedRequestManagement() {
 								aria-label="a dense table">
 								<TableHead>
 									<TableRow>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Employee Code
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Fullname
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Email
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Phone Number
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Branch
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Role
-										</TableCell>
-										<TableCell
-											align="center"
-											className="text-white text-sm">
-											Action
-										</TableCell>
+										<TableCell align="center" className="text-white text-sm">Employee Code</TableCell>
+										<TableCell align="center" className="text-white text-sm">Fullname</TableCell>
+										<TableCell align="center" className="text-white text-sm">Email</TableCell>
+										<TableCell align="center" className="text-white text-sm">Phone Number</TableCell>
+										<TableCell align="center" className="text-white text-sm">Branch</TableCell>
+										<TableCell align="center" className="text-white text-sm">Role</TableCell>
+										<TableCell align="center" className="text-white text-sm">Action</TableCell>
+
 									</TableRow>
 								</TableHead>
 								<TableBody>
 									{employees.length === 0 && (
 										<TableRow>
-											<TableCell
-												colSpan={7}
-												align="center"
-												className="text-sm">
-												No Request
-											</TableCell>
+											<TableCell colSpan={7} align="center" className="text-sm">No Request</TableCell>
 										</TableRow>
 									)}
 									{employees
@@ -273,33 +233,19 @@ export default function UpdatedRequestManagement() {
 													sx={{
 														"&:last-child td, &:last-child th": { border: 0 },
 													}}>
-													<TableCell align="center">
-														{employee.employeeCode}
-													</TableCell>
-													<TableCell align="center">
-														{employee.fullname}
-													</TableCell>
+													<TableCell align="center">{employee.employeeCode}</TableCell>
+													<TableCell align="center">{employee.fullname}</TableCell>
 													<TableCell align="center">{employee.email}</TableCell>
+													<TableCell align="center">{employee.phoneNumber}</TableCell>
+													<TableCell align="center">{employee.branchName}</TableCell>
+													<TableCell align="center">{employee.roleName}</TableCell>
 													<TableCell align="center">
-														{employee.phoneNumber}
-													</TableCell>
-													<TableCell align="center">
-														{employee.branchName}
-													</TableCell>
-													<TableCell align="center">
-														{employee.roleName}
-													</TableCell>
-													<TableCell align="center">
-														<Tooltip title="Accept">
-															<Button
-																variant="text"
-																color="success"
-																type="button"
+														<Tooltip title="Show">
+															<IconButton
 																onClick={() => {
 																	setSelectedEmployee(employee);
 																}}>
-																<DoneOutline className="text-green-700 text-[20px] mr-2" />
-															</Button>
+																<Visibility fontSize="small" /></IconButton>
 														</Tooltip>
 													</TableCell>
 												</TableRow>
@@ -320,108 +266,62 @@ export default function UpdatedRequestManagement() {
 
 					{selectedEmployee && (
 						<Dialog
-							open
-							className="max-w-[500px] mx-auto"
+							open className="max-w-[500px] mx-auto"
 						>
 							<Tooltip title="Close">
 								<CloseOutlined
-									onClick={() => setSelectedEmployee(null)}
 									color="error"
 									className="text-md absolute top-1 right-1 rounded-full hover:opacity-80 hover:bg-red-200 cursor-pointer"
+									onClick={() => setSelectedEmployee(null)}
 								/>
 							</Tooltip>
 
-							<div className="my-3 flex justify-center items-center">
-								<Avatar src={selectedEmployee?.submitedInfo.avatar} className="h-16 w-16" />
+							<Box sx={{ my: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+								<Avatar src={selectedEmployee?.submitedInfo.avatar} />
 								<DialogTitle className="text-center">
-									Updated Employee Request
+									Updated Request
 								</DialogTitle>
-							</div>
+							</Box>
 
 							<DialogContent>
 								<form
 									onSubmit={e => AcceptRequest(e)}
 									className="text-xs"
 								>
-									<div className="my-3">
-										<label className="font-semibold">Email:</label>
-										<input
-											className="min-w-[300px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
+									<Box sx={{ my: 1 }}>
+										<InputLabel>Email:</InputLabel >
+										<TextField
+											fullWidth disabled size="small" sx={{ minWidth: 300 }}
 											value={selectedEmployee?.submitedInfo.email}
-											readOnly disabled
 										/>
-									</div>
+									</Box>
 
-									<div className="my-3">
-										<label className="font-semibold">Phone number:</label>
-										<input
-											className="min-w-[300px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
+									<Box sx={{ my: 1 }}>
+										<InputLabel>Phone number:</InputLabel>
+										<TextField
+											fullWidth disabled size="small" sx={{ minWidth: 300 }}
 											value={selectedEmployee?.submitedInfo.phonenumber}
-											readOnly disabled
 										/>
-									</div>
+									</Box>
 
-									<div className="my-3">
-										<label className="font-semibold">Postal Code:</label>
-										<input
-											className="min-w-[300px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
-											value={selectedEmployee?.submitedInfo.postalcode}
-											readOnly disabled
-										/>
-									</div>
+									<Box sx={{ my: 1 }}>
+										<InputLabel>Postal Code:</InputLabel>
+										<TextField
+											fullWidth disabled size="small" sx={{ minWidth: 300 }}
+											value={selectedEmployee?.submitedInfo.postalcode} />
+									</Box>
 
-									<div className="my-3">
-										<label className="font-semibold">Address:</label>
-										<textarea
-											className="min-w-[300px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
-											value={selectedEmployee?.submitedInfo.address}
-											readOnly disabled></textarea>
-									</div>
+									<Box sx={{ my: 1 }}>
+										<InputLabel>Address:</InputLabel>
+										<TextareaAutosize
+											disabled minRows={5} className="min-w-[300px]"
+											value={selectedEmployee?.submitedInfo.address + "," + selectedEmployee?.submitedInfo.district + "," + selectedEmployee?.submitedInfo.province} />
+									</Box>
 
-									<div className="my-3 flex">
-										<div className="mr-2">
-											<label className="font-semibold">Province:</label>
-											<input
-												className="min-w-[150px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
-												name="province"
-												id="province"
-												value={selectedEmployee?.submitedInfo.province}
-												readOnly disabled
-											/>
-										</div>
-
-										<div>
-											<label className="font-semibold">District:</label>
-											<input
-												className="min-w-[150px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
-												name="district"
-												id="district"
-												value={selectedEmployee?.submitedInfo.district}
-												readOnly disabled
-											/>
-										</div>
-									</div>
-
-									<div className="flex justify-around mb-2 mt-10">
-										<Button
-											type="submit"
-											color="success"
-											variant="contained"
-											size="small"
-											className="w-full mr-2"
-										>
-											Accept
-										</Button>
-										<Button
-											color="error"
-											variant="contained"
-											size="small"
-											onClick={() => handleRejectRequest()}
-											className="w-full"
-										>
-											Reject
-										</Button>
-									</div>
+									<Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+										<Button fullWidth sx={{ mr: 2 }} type="submit" color="success" variant="contained" size="small">Accept</Button>
+										<Button fullWidth color="error" variant="contained" size="small" onClick={() => handleRejectRequest()}>Reject</Button>
+									</Box>
 								</form>
 							</DialogContent>
 						</Dialog>
