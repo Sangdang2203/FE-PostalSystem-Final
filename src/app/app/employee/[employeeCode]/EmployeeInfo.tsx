@@ -4,15 +4,15 @@ import useS3 from "@/hooks/useS3";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { getChildrenLocationsByParentId, getProvinces } from "@/app/_data/data";
+
 import React from "react";
+import Image from "next/image";
 import {
 	ApiResponse,
 	Employee,
 	Province,
 	UpdateInfoRequest,
 } from "@/types/types";
-import Image from "next/image";
 import { CloseOutlined, Send } from "@mui/icons-material";
 import {
 	Dialog,
@@ -20,21 +20,22 @@ import {
 	DialogTitle,
 	DialogContent,
 	Button,
-	Avatar,
 	InputLabel,
 	Typography,
 	Box,
-	Paper,
 } from "@mui/material";
 import Loading from "@/components/Loading";
+import {
+	getChildrenLocationsByParentId,
+	getProvinces,
+} from "@/app/_data/method";
 
 export default function EmployeeInfoPage() {
 	const [employee, setEmployee] = React.useState<Employee>();
 	const [loading, setLoading] = React.useState(true);
 	const [provinces, setProvinces] = React.useState<Province[]>([]);
 	const [districts, setDistricts] = React.useState<Province[]>([]);
-	const [openDialogUpdatedResquest, setOpenDialogUpdatedResquest] =
-		React.useState(false);
+	const [modal, setModal] = React.useState(false);
 
 	const { handleFileUpload, ButtonUpload, preview } = useS3();
 
@@ -45,6 +46,7 @@ export default function EmployeeInfoPage() {
 	}, [preview]);
 
 	const { data: session } = useSession();
+
 	const {
 		register: updatedRegister,
 		handleSubmit: handleUpdatedSubmit,
@@ -69,7 +71,7 @@ export default function EmployeeInfoPage() {
 			const payload = (await response.json()) as ApiResponse;
 
 			if (payload.ok) {
-				setOpenDialogUpdatedResquest(false);
+				setModal(false);
 				toast.success(payload.message);
 			} else {
 				toast.error(payload.message);
@@ -109,11 +111,19 @@ export default function EmployeeInfoPage() {
 				,
 			]).then(res => {
 				const [empRes, provinceRes] = res;
-				empRes.json().then(payload => {
-					if (payload.ok) {
-						setEmployee(payload.data);
-					}
-				});
+
+				empRes
+					.json()
+					.then(
+						(payload: {
+							ok: any;
+							data: React.SetStateAction<Employee | undefined>;
+						}) => {
+							if (payload.ok) {
+								setEmployee(payload.data);
+							}
+						}
+					);
 
 				if (provinceRes.ok) {
 					setProvinces(provinceRes.data);
@@ -134,10 +144,16 @@ export default function EmployeeInfoPage() {
 					<Box className="flex justify-between mx-3">
 						<Box className="flex items-center">
 							<Box>
-								<InputLabel className="p-2 font-semibold">Employee Code:</InputLabel>
-								<InputLabel className="p-2 font-semibold">Full name:</InputLabel>
+								<InputLabel className="p-2 font-semibold">
+									Employee Code:
+								</InputLabel>
+								<InputLabel className="p-2 font-semibold">
+									Full name:
+								</InputLabel>
 								<InputLabel className="p-2 font-semibold">Email:</InputLabel>
-								<InputLabel className="p-2 font-semibold">Phone number:</InputLabel>
+								<InputLabel className="p-2 font-semibold">
+									Phone number:
+								</InputLabel>
 								<InputLabel className="p-2 font-semibold">Address:</InputLabel>
 								<InputLabel className="p-2 font-semibold">Branch:</InputLabel>
 								<InputLabel className="p-2 font-semibold">Role:</InputLabel>
@@ -150,27 +166,27 @@ export default function EmployeeInfoPage() {
 									{employee?.fullname}
 								</Typography>
 								<Typography className="p-2">{employee?.email}</Typography>
+								<Typography className="p-2">{employee?.phoneNumber}</Typography>
 								<Typography className="p-2">
-									{employee?.phoneNumber}
+									{employee?.address}, {employee?.district},{" "}
+									{employee?.province}
 								</Typography>
-								<Typography className="p-2">
-									{employee?.address}, {employee?.district}, {employee?.province}
-								</Typography>
-								<Typography className="p-2">
-									{employee?.branchName}
-								</Typography>
+								<Typography className="p-2">{employee?.branchName}</Typography>
 
-								<Typography className="p-2">
-									{employee?.roleName}
-								</Typography>
+								<Typography className="p-2">{employee?.roleName}</Typography>
 							</Box>
 						</Box>
 
-						<img
-							src={"https://project-sem3.s3.ap-southeast-1.amazonaws.com/" + employee?.avatar}
-							alt={employee?.fullname}
-							style={{ maxHeight: "300px", maxWidth: "300px" }}
-							className="rounded-md"
+						<Image
+							src={
+								employee?.avatar
+									? "https://project-sem3.s3.ap-southeast-1.amazonaws.com/" +
+									  employee?.avatar
+									: "https://dummyimage.com/500x500/c3c3c3/FFF.png&text=UploadImage"
+							}
+							title="employee avatar"
+							alt="employee avatar"
+							className="rounded-md max-h-[300px] max-w-[300px]"
 						/>
 					</Box>
 
@@ -179,21 +195,17 @@ export default function EmployeeInfoPage() {
 							className="mx-3"
 							variant="contained"
 							color="secondary"
-							onClick={() => setOpenDialogUpdatedResquest(true)}
-						>
+							onClick={() => setModal(true)}>
 							Update Information
 						</Button>
 					</div>
-					<br />
-
 					{/* Dialog send updated info */}
 					<Dialog
-						open={openDialogUpdatedResquest}
-						className="max-w-[500px] mx-auto"
-					>
+						open={modal}
+						className="max-w-[500px] mx-auto">
 						<Tooltip title="Close">
 							<CloseOutlined
-								onClick={() => setOpenDialogUpdatedResquest(false)}
+								onClick={() => setModal(false)}
 								color="error"
 								className="text-md absolute top-1 right-1 rounded-full hover:opacity-80 hover:bg-red-200 cursor-pointer"
 							/>
@@ -208,8 +220,7 @@ export default function EmployeeInfoPage() {
 						<DialogContent>
 							<form
 								onSubmit={handleUpdatedSubmit(SendUpdatedRequest)}
-								className="text-xs"
-							>
+								className="text-xs">
 								<div className="my-3">
 									<label className="font-semibold">EmployeeCode:</label>
 									<input
@@ -258,12 +269,17 @@ export default function EmployeeInfoPage() {
 								<div className="my-3">
 									<label className="font-semibold">Address:</label>
 									<textarea
-										defaultValue={employee?.address + ", " + employee?.district + ", " + employee?.province}
+										defaultValue={
+											employee?.address +
+											", " +
+											employee?.district +
+											", " +
+											employee?.province
+										}
 										{...updatedRegister("address", {
 											required: "Address is required.",
 										})}
-										className="min-w-[300px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
-									></textarea>
+										className="min-w-[300px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"></textarea>
 								</div>
 
 								<div className="my-3 flex">
@@ -272,14 +288,12 @@ export default function EmployeeInfoPage() {
 										<select
 											{...updatedRegister("province")}
 											className="min-w-[150px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
-											id="province"
-										>
+											id="province">
 											<option value="">Select province</option>
 											{provinces.map(province => (
 												<option
 													key={province.id}
-													value={province.locationName}
-												>
+													value={province.locationName}>
 													{province.locationName}
 												</option>
 											))}
@@ -292,14 +306,12 @@ export default function EmployeeInfoPage() {
 											{...updatedRegister("district")}
 											className="min-w-[150px] border rounded-md p-[10px] cursor-pointer border-slate-500 w-full hover:border-green-700"
 											id="district"
-											disabled={districts.length === 0}
-										>
+											disabled={districts.length === 0}>
 											<option value="">Select district</option>
 											{districts.map(district => (
 												<option
 													key={district.id}
-													value={district.locationName}
-												>
+													value={district.locationName}>
 													{district.locationName}
 												</option>
 											))}
@@ -330,23 +342,33 @@ export default function EmployeeInfoPage() {
 								</div>
 
 								<div className="flex justify-between items-center my-3">
-									{preview ?
-										<Image src={`${previewUrl}`}
+									{preview ? (
+										<Image
+											src={`${previewUrl}`}
 											width={0}
 											height={0}
-											objectFit='contain'
+											objectFit="contain"
 											alt={"preview"}
 											title={"preview"}
 											style={{
-												width: 'clamp(100px, 100%, 200px)',
-												height: 'auto',
-												margin: '20px'
+												width: "clamp(100px, 100%, 200px)",
+												height: "auto",
+												margin: "20px",
 											}}
-										/> :
-										<img {...updatedRegister("avatar")} src={'https://dummyimage.com/500x500/c3c3c3/FFF.png&text=UploadImage'}
-											alt={"preview"} title={"preview"} width={180} height={180} className="rounded-md"
 										/>
-									}
+									) : (
+										<Image
+											{...updatedRegister("avatar")}
+											src={
+												"https://dummyimage.com/500x500/c3c3c3/FFF.png&text=UploadImage"
+											}
+											alt={"preview"}
+											title={"preview"}
+											width={180}
+											height={180}
+											className="rounded-md"
+										/>
+									)}
 									<ButtonUpload />
 								</div>
 

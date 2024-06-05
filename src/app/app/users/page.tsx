@@ -15,7 +15,7 @@ export default function UserManagement() {
 	const [roles, setRoles] = React.useState<Role[]>([]);
 	const [provinces, setProvinces] = React.useState<Province[]>([]);
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	const [rowsPerPage, setRowsPerPage] = React.useState(10); s
 	// const province = watch("province");
 	const handleChangePage = (
 		event: React.MouseEvent<HTMLButtonElement> | null,

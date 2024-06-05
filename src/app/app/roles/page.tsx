@@ -21,6 +21,7 @@ import {
 	Divider,
 	FormHelperText,
 	IconButton,
+	Container,
 } from "@mui/material";
 import { CheckBoxOutlineBlank, CheckBox, AddCircle, CloseOutlined, DeleteOutline } from "@mui/icons-material";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -232,7 +233,7 @@ export default function RoleManagement() {
 
 
 					{/* Role card */}
-					<Box className="grid sm:grid-cols-3 gap-x-3 gap-y-6">
+					<Container className="grid sm:grid-cols-3 gap-x-3 gap-y-6 mx-3">
 						{roles.map(role => (
 							<Card
 								key={role.id}
@@ -338,7 +339,7 @@ export default function RoleManagement() {
 								</CardActions>
 							</Card>
 						))}
-					</Box>
+					</Container>
 
 					{/* Form add new role */}
 					<Dialog

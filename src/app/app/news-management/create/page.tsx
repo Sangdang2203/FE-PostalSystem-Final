@@ -203,15 +203,6 @@ function Page() {
                   }}
                 >
                 </CKEditor>
-                {/* <TextField
-                  required
-                  id='content'
-                  name='content'
-                  label='content'
-                  fullWidth
-                  placeholder='Enter content'
-                  onChange={(e) => setContent(e.target.value)}
-                /> */}
               </Grid>
             </Grid>
             <Button sx={{ my: 1 }} variant="contained" onClick={handleSubmit}>CREATE</Button>
